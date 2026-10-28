@@ -19,19 +19,19 @@
 ## 4. Definitions
 | Term | Definition |
 |---|---|
-| Scheduled flight | (commercial airline service operating on a fixed timetable along a specific route) |
-| Operated flight | (airline that flies the plane, provides the crew and services) |
-| On time | (aircrafts that arrive less than 15 minutes of its scheduled time) |
-| First flight of the day | (an airlines aircraft earliest scheduled departure on any date) |
+| Scheduled flight | Every flight in the BTS data for June to August 2025, whether it operated, was cancelled or was diverted. |
+| Operated flight | A scheduled flight that flew and landed at its planned destination: not cancelled or diverted. |
+| On time | An operated flight that arrive less than 15 minutes after its scheduled arrival time. Early arrival count as on time. |
+| First flight of the day | For each. aircraft (tail number) on each date, its earliest operated departure. If the first scheduled flight was cancelled, the next operated flight counts. |
 
 ## 5. KPIs and business rules
 | KPI | Formula | Rules and exclusions |
 |---|---|---|
-| Arrival on-time performance (A15) | (on-time operated flights ÷ operated flights) | (aircrafts that arrive less than 15 minutes of its scheduled time and airline that flies the plane, provides the crew and services) |
-| First-wave departure punctuality | (first-wave flights that departed less than 15 minutes late ÷ all operated first-wave flights) | (an airlines aircraft earliest scheduled departure on any date) |
-| Reactionary delay share | (late-aircraft minutes ÷ all delay-cause minutes) | (use the late-aircraft delay minutes that airline report to BTS (the LateAircraftDelay column). Calculate the share only over operated flights that arrived 15 minutes or more late.  ) |
-| Cancellation rate | (cancelled ÷ scheduled) | (Scheduled = every flight in the source data. Diverted flights count as operated not cancelled. The cancellation reasons include carrier, weather, air traffic system and security. ) |
-| Delay minutes by cause | (minutes per cause, and share of total) | (Operated flights arriving 15+ minutes late only, because BTS reports causes only for these. The five causes must add up to the flight's arrival delay. ) |
+| Arrival on-time performance (A15) | aircrafts that arrive less than 15 minutes of its scheduled time and airline that flies the plane, provides the crew and services |
+| First-wave departure punctuality | first-wave flights that departed less than 15 minutes late ÷ all operated first-wave flights) | (an airlines aircraft earliest scheduled departure on any date |
+| Reactionary delay share | (late-aircraft minutes ÷ all delay-cause minutes) | use the late-aircraft delay minutes that airline report to BTS (the LateAircraftDelay column). Calculate the share only over operated flights that arrived 15 minutes or more late.   |
+| Cancellation rate | (cancelled ÷ scheduled) | Scheduled = every flight in the source data. Diverted flights count as operated not cancelled. The cancellation reasons include carrier, weather, air traffic system and security.  |
+| Delay minutes by cause | (minutes per cause, and share of total) | Operated flights arriving 15+ minutes late only, because BTS reports causes only for these. The five causes must add up to the flight's arrival delay.  |
 
 ## 6. Acceptance criteria
 1. Row count in the warehouse equals the row count in the source files.
