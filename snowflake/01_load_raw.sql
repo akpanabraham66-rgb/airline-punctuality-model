@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS FLIGHTS (
     SECURITY_DELAY      VARCHAR,
     LATE_AIRCRAFT_DELAY VARCHAR
 );
+-- Manual step: upload ontime_2025_06.csv, _07.csv and _08.csv
+-- to BTS_STAGE (Ingestion > Add data > Load files into a stage)
 LIST @BTS_STAGE;
 
 COPY INTO FLIGHTS
@@ -60,6 +62,7 @@ SELECT
     MIN(TRY_TO_DATE(SPLIT_PART(FL_DATE, ' ', 1), 'MM/DD/YYYY')) AS first_day,
     MAX(TRY_TO_DATE(SPLIT_PART(FL_DATE, ' ', 1), 'MM/DD/YYYY')) AS last_day,
     COUNT_IF(TRY_TO_DATE(SPLIT_PART(FL_DATE, ' ', 1), 'MM/DD/YYYY') IS NULL) AS bad_dates
+-- Data quality: are flights with no tail number mostly cancelled?
 FROM FLIGHTS;
 
 SELECT CANCELLED, COUNT(*) AS FLIGHTS
