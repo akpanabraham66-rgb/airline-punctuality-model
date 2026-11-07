@@ -9,11 +9,11 @@ This model shows an operations control duty manager how punctual the operation w
 - **User:** An operations control duty manager, who reviews last week's punctuality every week.
 - **Questions it must answer:**
   1. How punctual was the operation last week?
-  2. Where does delay start: which airports, airlines, times of day?
+  2. Where does delay start: which airports, airlines?
   3. How much delay passes from one flight to the next on the same aircraft?
 
 ## 3. Data source
-- US Bureau of Transportation Statistics (BTS), part of the US Department of Transportation: Reporting Carrier On-Time Performance, June to August 2025
+- US Bureau of Transportation Statistics (BTS), part of the US Department of Transportation: Reporting Carrier On-Time Performance, June to August 2025.
 - One row per scheduled US domestic flight.
 
 ## 4. Definitions
@@ -22,21 +22,21 @@ This model shows an operations control duty manager how punctual the operation w
 | Scheduled flight | Every flight in the BTS data for June to August 2025, whether it operated, was cancelled or was diverted. |
 | Operated flight | A scheduled flight that flew and landed at its planned destination: not cancelled or diverted. |
 | Departed flight | A scheduled flight that was not cancelled (Cancelled = 0). It includes diverted flights, because they took off. |
-| On time | An operated flight that arrive less than 15 minutes after its scheduled arrival time. Early arrivals count as on time. |
-| First flight of the day | For each. aircraft (tail number) on each date, its earliest departed flight by scheduled departure time (CRSDepTime). If the first scheduled flight was cancelled, the next operated flight counts. |
+| On time | An operated flight that arrives less than 15 minutes after its scheduled arrival time. Early arrivals count as on time. |
+| First flight of the day | For each aircraft (tail number) on each date, its earliest departed flight by scheduled departure time (CRSDepTime). If the first scheduled flight was cancelled, the next departed flight counts. |
 | Reactionary delay | Delay caused by the same aircraft arriving late from its previous flight. Measured in minutes with the BTS LateAircraftDelay column, as airlines report it. |
 
 ## 5. KPIs and business rules
 | KPI | Formula | Rules and exclusions |
 |---|---|---|
-| Arrival on-time performance (A15) | on-time flights ÷ operated flights | Excludes cancelled and diverted flights, because they did not arrive their planned destination. Cancellations are reported separately in the cancellation rate. |
-| First-wave departure punctuality | first-wave flights that departed less than 15 minutes late ÷ all operated first-wave flights | Exclude flights with no tail number. Cancelled flights are skipped. Diverted flights count, because they departed. Times are local, with no time-zone adjustment. |
-| Reactionary delay share | late-aircraft minutes ÷ all delay-cause minutes | only over operated flights that arrived 15 minutes or more late because BTS reports delay causes only for these. |
-| Cancellation rate | cancelled ÷ scheduled | No exclusions: the denominator is every scheduled flight. Diverted flights are not cancelled, so they count in the denominator only. Reason use the BTS cancellationCode: A Carrier, B Weather, C National Air System, D Security |
+| Arrival on-time performance (A15) | on-time flights ÷ operated flights | Excludes cancelled and diverted flights, because they did not arrive at their planned destination. Cancellations are reported separately in the cancellation rate. |
+| First-wave departure punctuality | first-wave flights that departed less than 15 minutes late ÷ all first-wave flights | Excludes flights with no tail number. Cancelled flights are skipped. Diverted flights count, because they departed. Times are local, with no time-zone adjustment. |
+| Reactionary delay share | late-aircraft minutes ÷ all delay-cause minutes | only operated flights that arrived 15 or more minutes late, because BTS reports delay causes only for these. |
+| Cancellation rate | cancelled ÷ scheduled | No exclusions: the denominator is every scheduled flight. Diverted flights are not cancelled, so they count in the denominator only. Reasons use the BTS CancellationCode: A Carrier, B Weather, C National Air System, D Security. |
 | Delay minutes by cause | minutes per cause, and share of total | Operated flights arriving 15+ minutes late only, because BTS reports causes only for these. |
 
 ## 6. Acceptance criteria
-1. Raw row count in Snowflake equals the total number of row in the source files.
+1. Raw row count in Snowflake equals the total number of rows in the source files.
 2. The flight key (date, airline, flight number, origin) is unique in fct_flights. If it is not, document the duplicates.
 3. Date, airline, origin and destination are never empty.
 4. Cancelled is always 0 or 1. CancellationCode is A, B, C or D whenever a flight is cancelled.
