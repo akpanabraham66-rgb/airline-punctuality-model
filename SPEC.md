@@ -9,7 +9,7 @@ This model shows an operations control duty manager how punctual the operation w
 - **User:** An operations control duty manager, who reviews last week's punctuality every week.
 - **Questions it must answer:**
   1. How punctual was the operation last week?
-  2. Where does delay start: which airports, airlines?
+  2. Where does delay start: which airports and airlines?
   3. How much delay passes from one flight to the next on the same aircraft?
 
 ## 3. Data source
@@ -31,7 +31,7 @@ This model shows an operations control duty manager how punctual the operation w
 |---|---|---|
 | Arrival on-time performance (A15) | on-time flights ÷ operated flights | Excludes cancelled and diverted flights, because they did not arrive at their planned destination. Cancellations are reported separately in the cancellation rate. |
 | First-wave departure punctuality | first-wave flights that departed less than 15 minutes late ÷ all first-wave flights | Excludes flights with no tail number. Cancelled flights are skipped. Diverted flights count, because they departed. Times are local, with no time-zone adjustment. |
-| Reactionary delay share | late-aircraft minutes ÷ all delay-cause minutes | only operated flights that arrived 15 or more minutes late, because BTS reports delay causes only for these. |
+| Reactionary delay share | late-aircraft minutes ÷ all delay-cause minutes | Only operated flights that arrived 15 or more minutes late, because BTS reports delay causes only for these. |
 | Cancellation rate | cancelled ÷ scheduled | No exclusions: the denominator is every scheduled flight. Diverted flights are not cancelled, so they count in the denominator only. Reasons use the BTS CancellationCode: A Carrier, B Weather, C National Air System, D Security. |
 | Delay minutes by cause | minutes per cause, and share of total | Operated flights arriving 15+ minutes late only, because BTS reports causes only for these. |
 
@@ -47,7 +47,7 @@ This model shows an operations control duty manager how punctual the operation w
 ## 7. Out of scope and known limitations
 - All times are local to each airport: departures in the origin's time zone and arrivals in the destination's, with no adjustment. This means times cannot be compared as one clock across airports, and flight durations cannot be calculated by subtracting departure from arrival.
 - BTS only reports delay causes for flights arriving 15 or more minutes late, so the reactionary share describes significant delays only.
-- The data covers domestic flights by US airlines that report to BTS, such as Delta and American, not Finnair, so the result cannot be compared with Finnair's punctuality. The definitions and model would work the same way on Finnair's own flight data, with only the delay-cause mapping changed.
+- The data covers domestic flights by US airlines that report to BTS, such as Delta and American, not Finnair, so the results cannot be compared with Finnair's punctuality. The definitions and model would work the same way on Finnair's own flight data, with only the delay-cause mapping changed.
 - A breakdown by time of day is out of scope for this version.
 - Historical review of June to August 2025, loaded once with no refresh. This means it shows patterns after the event and cannot support decisions on the day of operation. Running it as a weekly review would need a scheduled data load and dbt job.
 - Summer months only, so results may not hold for winter, when snow, de-icing and shorter days change the delay patterns.
