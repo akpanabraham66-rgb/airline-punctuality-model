@@ -62,9 +62,9 @@ SELECT
     MIN(TRY_TO_DATE(SPLIT_PART(FL_DATE, ' ', 1), 'MM/DD/YYYY')) AS first_day,
     MAX(TRY_TO_DATE(SPLIT_PART(FL_DATE, ' ', 1), 'MM/DD/YYYY')) AS last_day,
     COUNT_IF(TRY_TO_DATE(SPLIT_PART(FL_DATE, ' ', 1), 'MM/DD/YYYY') IS NULL) AS bad_dates
--- Data quality: are flights with no tail number mostly cancelled?
 FROM FLIGHTS;
 
+-- Data quality: are flights with no tail number mostly cancelled?
 SELECT CANCELLED, COUNT(*) AS FLIGHTS
 FROM FLIGHTS
 WHERE TAIL_NUM IS NULL
