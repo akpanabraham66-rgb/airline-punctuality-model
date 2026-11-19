@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Raw data exactly as delivered by the source. Loaded by snowflake/01_load_raw.sql
+      and never edited.
+    database: PUNCTUALITY
+    schema: RAW
+    tables:
+      - name: flights
+        identifier: FLIGHTS
+        description: >
+          BTS Reporting Carrier On-Time Performance, June to August 2025.
+          One row per scheduled US domestic flight. Every column is text (VARCHAR);
+          types are converted in stg_flights.
+        columns:
+          # Acceptance criterion 3: date, airline, origin and destination are never empty.
+          - name: fl_date
+            description: Flight date as text, for example "6/1/2025 12:00:00 AM".
+            data_tests:
+              - not_null
+          - name: op_unique_carrier
+            description: Two-character code of the airline that operated the flight.
+            data_tests:
+              - not_null
+          - name: origin
+            description: Three-letter code of the departure airport.
+            data_tests:
+              - not_null
+          - name: dest
+            description: Three-letter code of the arrival airport.
+            data_tests:
+              - not_null
