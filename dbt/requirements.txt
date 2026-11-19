@@ -1,0 +1,4 @@
+# Python packages for running dbt locally (pinned so every run uses the same versions).
+# dbt 1.10 is the newest stable line that supports the Mac's built-in Python 3.9.
+dbt-core==1.10.23
+dbt-snowflake==1.10.2
