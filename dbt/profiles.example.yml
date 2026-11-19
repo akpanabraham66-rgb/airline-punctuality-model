@@ -1,0 +1,19 @@
+# Example connection profile. Copy it to ~/.dbt/profiles.yml on the machine that runs dbt
+# and fill in the real values there. Never commit the real file or the private key.
+#
+# dbt signs in as the service user DBT_USER with key-pair authentication
+# (snowflake/03_dbt_user.sql creates the user and role).
+
+airline_punctuality:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: <organisation>-<account>        # for example ABCDEFG-XY12345
+      user: DBT_USER
+      role: DBT_ROLE
+      warehouse: PUNCTUALITY_WH
+      database: PUNCTUALITY
+      schema: DBT_DEV                         # dbt creates this schema for development builds
+      private_key_path: /path/to/rsa_key.p8   # stays on your computer, outside the repository
+      threads: 4

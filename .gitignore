@@ -1,0 +1,19 @@
+# dbt build output and installed packages
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+logs/
+
+# Python virtual environment for running dbt locally
+.venv/
+venv/
+
+# Secrets: never commit keys or connection profiles
+*.p8
+*.pem
+*.key
+profiles.yml
+.user.yml
+
+# macOS
+.DS_Store

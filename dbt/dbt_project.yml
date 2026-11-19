@@ -1,0 +1,17 @@
+# dbt project for the airline punctuality model.
+# Reads the raw BTS flights in PUNCTUALITY.RAW and builds tested models on top.
+
+name: airline_punctuality
+version: "1.0.0"
+config-version: 2
+
+# Which connection profile to use. The profile itself lives in ~/.dbt/profiles.yml
+# on the machine that runs dbt, never in this repository (see profiles.example.yml).
+profile: airline_punctuality
+
+models:
+  airline_punctuality:
+    staging:
+      # Staging models clean and rename the raw data. Views are enough:
+      # they store no data, just the query.
+      +materialized: view
