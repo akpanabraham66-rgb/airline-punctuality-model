@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: stg_flights
+    description: >
+      One row per scheduled flight in the BTS data, June to August 2025.
+      Columns are renamed and converted from text to dates, numbers and true/false
+      once, here, and the status flags every later model uses are defined here.
+    columns:
+      - name: flight_date
+        description: Flight date, converted from the BTS text such as "6/1/2025 12:00:00 AM".
+        data_tests:
+          - not_null   # a failed date conversion would show up as an empty date
+      - name: is_cancelled
+        description: True if BTS reports the flight as cancelled.
+        data_tests:
+          - not_null
+      - name: is_diverted
+        description: True if the flight landed somewhere other than its planned destination.
+        data_tests:
+          - not_null
+      - name: is_departed
+        description: Departed flight. Not cancelled. Includes diverted flights, because they took off.
+        data_tests:
+          - not_null
+      - name: is_operated
+        description: Operated flight. Not cancelled and not diverted. The A15 denominator.
+        data_tests:
+          - not_null
+      - name: is_on_time
+        description: On time. An operated flight arriving less than 15 minutes late. The A15 numerator.
+        data_tests:
+          - not_null
