@@ -80,3 +80,33 @@ models:
               arguments:
                 to: ref('dim_date')
                 field: flight_date
+
+  - name: mart_daily_punctuality
+    description: >
+      Counts for A15, D15 and the cancellation rate, one row per date, airline and
+      departure airport. Percentages are calculated from these counts in Power BI.
+    columns:
+      - name: scheduled_flights
+        description: All scheduled flights. The cancellation-rate denominator.
+      - name: cancelled_flights
+        description: Cancelled flights. The cancellation-rate numerator.
+      - name: departed_flights
+        description: Flights that were not cancelled, including diverted ones. The D15 denominator.
+      - name: departed_on_time_flights
+        description: Departed flights that left less than 15 minutes late. The D15 numerator.
+      - name: operated_flights
+        description: Flights that were not cancelled or diverted. The A15 denominator.
+      - name: on_time_flights
+        description: Operated flights arriving less than 15 minutes late. The A15 numerator.
+
+  - name: mart_delay_causes
+    description: >
+      Delay minutes by BTS cause for operated flights arriving 15 or more minutes late,
+      one row per date, airline and departure airport.
+    columns:
+      - name: delayed_flights
+        description: Operated flights arriving 15 or more minutes late.
+      - name: late_aircraft_minutes
+        description: Reactionary delay minutes (BTS LateAircraftDelay). The reactionary-share numerator.
+      - name: total_cause_minutes
+        description: Sum of the five cause columns. The reactionary-share denominator.
