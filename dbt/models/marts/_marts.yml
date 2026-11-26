@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: dim_carrier
+    description: One row per airline that operated flights in the data, with its name.
+    columns:
+      - name: carrier_code
+        description: Two-character BTS code of the airline that operated the flight.
+        data_tests:
+          - unique     # the grain: one row per airline
+          - not_null
+      - name: carrier_name
+        description: Airline name, typed from the session 5 table.
+        data_tests:
+          - not_null
+
+  - name: fct_flights
+    description: >
+      One row per scheduled flight, June to August 2025. The centre of the star schema:
+      measurements and flags, plus codes that join to dim_carrier, dim_airport and dim_date.
+    columns:
+      - name: flight_key
+        description: Date, airline, flight number and origin joined with hyphens.
+        data_tests:
+          # Acceptance criterion 2: the flight key is unique.
+          - unique
+          - not_null
+      - name: carrier_code
+        description: Airline code. Joins to dim_carrier.
+        data_tests:
+          # Acceptance criterion 5 (airline half): every airline exists in dim_carrier.
+          - relationships:
+              arguments:
+                to: ref('dim_carrier')
+                field: carrier_code
