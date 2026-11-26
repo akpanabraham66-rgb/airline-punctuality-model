@@ -14,6 +14,30 @@ models:
         data_tests:
           - not_null
 
+  - name: dim_airport
+    description: >
+      One row per airport code that appears as an origin or destination in the data.
+      Codes only: the downloaded BTS columns don't include airport names.
+    columns:
+      - name: airport_code
+        description: Three-letter airport code, for example ATL.
+        data_tests:
+          - unique     # the grain: one row per airport
+          - not_null
+
+  - name: dim_date
+    description: One row per date, June to August 2025, with calendar columns for slicing.
+    columns:
+      - name: flight_date
+        description: The date. Joins to fct_flights.flight_date.
+        data_tests:
+          - unique     # the grain: one row per date
+          - not_null
+      - name: weekday_number
+        description: ISO weekday, 1 = Monday to 7 = Sunday.
+      - name: is_weekend
+        description: True on Saturday and Sunday.
+
   - name: fct_flights
     description: >
       One row per scheduled flight, June to August 2025. The centre of the star schema:
@@ -33,3 +57,26 @@ models:
               arguments:
                 to: ref('dim_carrier')
                 field: carrier_code
+      - name: origin_airport
+        description: Departure airport code. Joins to dim_airport.
+        data_tests:
+          # Acceptance criterion 5 (airport half): every origin exists in dim_airport.
+          - relationships:
+              arguments:
+                to: ref('dim_airport')
+                field: airport_code
+      - name: dest_airport
+        description: Arrival airport code. Joins to dim_airport.
+        data_tests:
+          # Acceptance criterion 5 (airport half): every destination exists in dim_airport.
+          - relationships:
+              arguments:
+                to: ref('dim_airport')
+                field: airport_code
+      - name: flight_date
+        description: Flight date. Joins to dim_date.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: flight_date
