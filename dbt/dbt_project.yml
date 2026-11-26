@@ -15,3 +15,15 @@ models:
       # Staging models clean and rename the raw data. Views are enough:
       # they store no data, just the query.
       +materialized: view
+    marts:
+      # Facts, dimensions and marts are read many times by Power BI,
+      # so they are stored as tables rather than re-run on every read.
+      +materialized: table
+
+seeds:
+  airline_punctuality:
+    carriers:
+      # Keep both columns as text, so a code is never read as a number.
+      +column_types:
+        carrier_code: varchar
+        carrier_name: varchar
